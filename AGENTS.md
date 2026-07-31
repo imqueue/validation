@@ -70,11 +70,31 @@ npm run test-lcov      # writes coverage/lcov.info
   sequentially — do not introduce async between them or reorder.
 - **A class field decorated with `@validate` requires the class to be
   `@validatable()`** for `schemaOf` to see it.
-- **Validators resolve lazily.** A `@validatable` class used as a validator is
-  resolved via `schemaOf` on first use, so classes can reference each other
-  regardless of definition order.
-- **Invalid input throws the raw `ZodError`** (which surfaces to the RPC
-  caller). Do not wrap or swallow it.
+- **Validators resolve lazily — but that does not buy mutual references.** A
+  `@validatable` class used as a validator is resolved via `schemaOf` on first
+  use, which defers the schema assembly. The reference itself is not deferred:
+  the decorator argument is evaluated when the referencing class is defined, so
+  a class named there must be declared above it. Both `tsc` (TS2449) and the
+  runtime (`ReferenceError: Cannot access 'X' before initialization`) reject the
+  other order, and two classes therefore cannot reference each other. An earlier
+  version of this file claimed otherwise; verified 2026-08-01.
+- **An unsealed class contaminates the next sealed one.** Because `@validate`
+  buffers into module state that `@validatable` claims, a class using `@validate`
+  without `@validatable` leaves its fields for whichever class is sealed next —
+  which then requires properties it never declared, while the class with the
+  actual mistake validates nothing. Test files therefore need care about
+  declaration order, and each spec file gets its own process (`node --test`),
+  which is what keeps them isolated.
+- **`@validated` validates without substituting.** `schema.parse()`'s return
+  value is discarded and the original argument is passed to the method, so
+  transforming schemas (`z.coerce.number()`, `.trim()`, `.default(...)`) change
+  nothing the body sees, and object schemas do not strip unknown properties.
+- **Invalid input throws the raw `ZodError`.** Do not wrap or swallow it. Note
+  what a *remote* caller actually receives, though: `@imqueue/rpc`'s
+  `IMQService` converts anything a method throws into an `IMQRPCError` payload,
+  so the client sees `code: 'IMQ_RPC_CALL_ERROR'` (a `ZodError` carries no code)
+  with Zod's issue list as the message string. `instanceof ZodError` holds
+  in-process only.
 
 ## License
 

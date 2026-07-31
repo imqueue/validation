@@ -87,9 +87,27 @@ TC39 decorator metadata (`Symbol.metadata`) is not populated by every build
 tool (esbuild/tsx), so field validators are buffered as each class body
 evaluates and **sealed** onto the class by the `@validatable()` class decorator.
 Field decorators run before the class decorator and class bodies evaluate
-sequentially, so the buffer is always attributed to the right class.
-`schemaOf(Class)` then assembles the sealed field validators into a
+sequentially, so the buffer reaches the right class — provided that class is
+decorated. `schemaOf(Class)` then assembles the sealed field validators into a
 `z.object(...)`.
+
+## Three things to know
+
+- **`@validatable()` is not optional.** Nothing flushes the buffer when a class
+  body merely ends, so a class using `@validate` without `@validatable()` hands
+  its fields to the next class that *is* sealed. That class then rejects valid
+  input over a property it never declared, while the class with the actual
+  mistake validates nothing — the error surfaces on the innocent one.
+- **`@validated` checks arguments, it does not replace them.** The method body
+  receives exactly what the caller passed, so a transforming schema validates as
+  expected and changes nothing downstream: `z.coerce.number()` accepts `'42'` and
+  the parameter is still the string, `.trim()` hands over the untrimmed original,
+  `.default(...)` fills nothing in, and object schemas leave undeclared
+  properties in place. Parse in the body where the converted value is what you
+  need.
+- **Inherited fields are not inherited rules.** `@validatable()` seals the fields
+  declared in that class body only, and `schemaOf` does not walk the prototype
+  chain, so a subclass validates a parent's field only by re-declaring it.
 
 ## Running Unit Tests
 
