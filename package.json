@@ -1,6 +1,6 @@
 {
   "name": "@imqueue/validation",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Zod-backed field- and method-level validation via native (TC39) decorators for Node.js & TypeScript microservices — the input-validation layer of the @imqueue framework",
   "keywords": [
     "validation",
