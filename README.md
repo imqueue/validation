@@ -1,6 +1,8 @@
 # @imqueue/validation
 
-[![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://rawgit.com/imqueue/validation/master/LICENSE)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/imqueue/validation/build.yml)](https://github.com/imqueue/validation/actions/workflows/build.yml)
+[![npm version](https://img.shields.io/npm/v/@imqueue/validation)](https://www.npmjs.com/package/@imqueue/validation)
+[![License](https://img.shields.io/badge/license-GPL-blue.svg)](https://github.com/imqueue/validation/blob/master/LICENSE)
 
 Zod-backed, field- and method-level validation via native (TC39) decorators for
 Node.js & TypeScript back-ends — the input-validation layer of the @imqueue
@@ -12,7 +14,9 @@ class with `@validatable`, and validate method arguments with `@validated`.
 closed-source products at [imqueue.com](https://imqueue.com/).
 
 **Using an AI assistant?** Point it at [imqueue.org/llms.txt](https://imqueue.org/llms.txt)
-for a machine-readable index of the docs, or see [AGENTS.md](./AGENTS.md).
+for a machine-readable index of the docs, or see [AGENTS.md](./AGENTS.md). Current
+version, licence and Node floor for every package:
+[imqueue.org/status.json](https://imqueue.org/status.json).
 
 **Related packages:**
 
