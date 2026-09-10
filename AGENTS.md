@@ -29,8 +29,9 @@ validate RPC inputs.
   **not** `experimentalDecorators` and **not** `reflect-metadata`. Do not enable
   `experimentalDecorators`; it changes decorator semantics and would break the
   buffer/seal mechanism.
-- **No runtime dependencies. `zod` is an unversioned peer** (`"zod": "*"`),
-  installed here as a devDependency so the build and the suite have one. The
+- **No runtime dependencies. `zod` is an unversioned peer** (`"zod": "*"`), and
+  unversioned again in `devDependencies` so the build and the suite run against
+  whatever Zod is newest rather than against a range this package chose. The
   consumer's copy is the one that must be used: a validator handed to
   `@validate` is built from *their* Zod, and a second copy nested under this
   package would make `z.object()` assemble schemas from a different class
