@@ -1,6 +1,6 @@
 {
   "name": "@imqueue/validation",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Zod-backed field- and method-level validation via native (TC39) decorators for Node.js & TypeScript microservices — the input-validation layer of the @imqueue framework",
   "keywords": [
     "validation",
@@ -45,14 +45,15 @@
   "funding": "https://imqueue.com/",
   "author": "imqueue.com <support@imqueue.com> (https://imqueue.com)",
   "license": "GPL-3.0-only",
-  "dependencies": {
-    "zod": "^4.4.3"
+  "peerDependencies": {
+    "zod": "*"
   },
   "devDependencies": {
     "@types/node": "^24.9.1",
     "oxfmt": "0.57.0",
     "oxlint": "1.72.0",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "zod": "*"
   },
   "main": "index.js",
   "types": "index.d.ts",
