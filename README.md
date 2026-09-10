@@ -41,12 +41,14 @@ version, licence and Node floor for every package:
 
 # Requirements
 
-Node.js ≥ 22.12. `zod` v4 is a runtime dependency.
+Node.js ≥ 22.12. `zod` is a peer dependency with no version constraint: the
+schemas you write and the ones this package builds from them have to come from
+one copy of Zod, so the version is yours to choose and yours to install.
 
 # Install
 
 ```bash
-npm i --save @imqueue/validation
+npm i --save @imqueue/validation zod
 ```
 
 # Usage

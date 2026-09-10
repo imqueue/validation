@@ -29,8 +29,14 @@ validate RPC inputs.
   **not** `experimentalDecorators` and **not** `reflect-metadata`. Do not enable
   `experimentalDecorators`; it changes decorator semantics and would break the
   buffer/seal mechanism.
-- **Single runtime dependency: `zod`.** Do not add heavyweight deps; this
-  package is meant to stay small.
+- **No runtime dependencies. `zod` is an unversioned peer** (`"zod": "*"`),
+  installed here as a devDependency so the build and the suite have one. The
+  consumer's copy is the one that must be used: a validator handed to
+  `@validate` is built from *their* Zod, and a second copy nested under this
+  package would make `z.object()` assemble schemas from a different class
+  identity than the ones it was given. Keep the runtime surface to what every
+  Zod major has had — `z.object()` and `schema.parse()` — and do not add
+  heavyweight deps; this package is meant to stay small.
 - **Lint/format:** `oxlint` + `oxfmt`. Run `npm run format` before committing;
   CI checks `npm run format:check`.
 - Build **emits `.js`/`.d.ts`/`.js.map` next to sources**; these are
